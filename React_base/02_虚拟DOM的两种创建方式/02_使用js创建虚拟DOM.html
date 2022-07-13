@@ -7,16 +7,14 @@
   <title>Document</title>
 </head>
 <body>
-  <!-- 创建容器 -->
   <div id="test"></div>
 
-  <script src="../JS/react.development.js"></script>
-  <script src="../JS/react-dom.development.js"></script>
-  <script src="../JS/babel.min.js"></script>
-  <script type="text/babel">
-    // 1、创建虚拟DOM
-    const VDOM = <h1>Hello React</h1>
-    // 2、渲染虚拟DON
+  <script src="../../JS/react.development.js"></script>
+  <script src="../../JS/react-dom.development.js"></script>
+
+  <script>
+    const VDOM = React.createElement('h1', {id : 'test'}, 'Hello React')
+
     ReactDOM.render(VDOM,document.getElementById('test'))
   </script>
 </body>
