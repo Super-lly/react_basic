@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生命周期(旧)</title>
+</head>
+
+<body>
+  <div id="test"></div>
+  <script src="../../JS/react.development.js"></script>
+  <script src="../../JS/react-dom.development.js"></script>
+  <script src="../../JS/babel.min.js"></script>
+  <script type="text/babel">
+    class Login extends React.Component {
+      // 构造器
+      constructor(props){
+        console.log('constructor');
+        super(props)
+        this.state = {count:0,sonState:true}
+      }
+
+      // +1
+      add = () =>{
+        let {count} = this.state
+        count += 1
+        this.setState({count})
+      }
+      // 卸载
+      remove = () =>{
+        ReactDOM.unmountComponentAtNode(document.getElementById('test'))
+      }
+      // 强制更新
+      force = () =>{
+        this.forceUpdate()
+      }
+      // 改变子组件状态
+      changeState = () =>{
+        let {sonState} = this.state
+        this.setState({sonState:!sonState})
+      }
+
+      // 挂载前
+      componentWillMount(){
+        console.log('componentWillMount');
+      }
+      // 挂载完成后
+      componentDidMount() {
+        console.log('componentDidMount');
+      }
+      // 将要卸载前
+      componentWillUnmount() {
+        console.log('componentWillUnmount');
+      }
+      // 控制更新的阀门 不写此函数会默认返回true 若写出 则需指明返回值 否则将返回undefined 报错
+      shouldComponentUpdate(){
+        console.log('shouldComponentUpdate');
+        return true
+      }
+      // 更新前调用
+      componentWillUpdate(){
+        console.log('componentWillUpdate');
+      }
+      // 更新完成后
+      componentDidUpdate(){
+        console.log('componentDidUpdate');
+      }
+      render() {
+        console.log('render');
+        let {count} = this.state
+        return (
+          <div>
+            <h1>当前数值为：{count}</h1>
+            <button onClick={this.add}>+1</button>&nbsp;
+            <button onClick={this.remove}>卸载</button>&nbsp;
+            <button onClick={this.force}>强制更新</button>&nbsp;
+            <button onClick={this.changeState}>改变状态</button>
+            <Son sonState={this.state.sonState} />
+          </div>
+        )
+      }
+    }
+    class Son extends React.Component{
+      // 父组件render调用 此函数只在第二次更新时起作用(刚进页面时子组件拿到props值 但是惠调用此函数) 可以接收参数props
+      componentWillReceiveProps(){
+        console.log('son----componentWillReceiveProps');
+      }
+      render(){
+        return(
+          <div>
+            <h1>子组件,状态：{this.props.sonState ? '白':'黑'}</h1>  
+          </div>
+        )
+      }
+    }
+    ReactDOM.render(<Login />, document.getElementById('test'))
+  </script>
+</body>
+
+</html>
