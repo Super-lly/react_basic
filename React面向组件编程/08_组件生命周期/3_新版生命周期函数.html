@@ -16,36 +16,43 @@
   <script type="text/babel">
     class Login extends React.Component {
       // 构造器
-      constructor(props){
+      constructor(props) {
         console.log('constructor');
         super(props)
-        this.state = {count:0,sonState:true}
+        this.state = { count: 0, sonState: true }
       }
 
       // +1
-      add = () =>{
-        let {count} = this.state
+      add = () => {
+        let { count } = this.state
         count += 1
-        this.setState({count})
+        this.setState({ count })
       }
       // 卸载
-      remove = () =>{
+      remove = () => {
         ReactDOM.unmountComponentAtNode(document.getElementById('test'))
       }
       // 强制更新
-      force = () =>{
+      force = () => {
         this.forceUpdate()
       }
       // 改变子组件状态
-      changeState = () =>{
-        let {sonState} = this.state
-        this.setState({sonState:!sonState})
+      changeState = () => {
+        let { sonState } = this.state
+        this.setState({ sonState: !sonState })
       }
 
-      // 可接收两个参数 props和state 必须存在返回值 状态对象(state Obj)或者null 当state中所有值都取决于props时。返回props
-      static getDerivedStateFromProps(){
+      // 当state中所有值都取决于props时。可以使用此函数
+      // 可接收两个参数 props和state 必须存在返回值 状态对象(state Obj)或者null 
+      static getDerivedStateFromProps() {
         console.log('getDerivedStateFromProps');
         return null
+      }
+      // 在最近一次渲染将要完成前调用 必须存在返回值 null或者SnapshopValue(任意内容) 将作为componentDidUpdate的第三个参数使用
+      getSnapshotBeforeUpdate() {
+        console.log('getSnapshotBeforeUpdate');
+        return null
+        // return 'SnapshopValue'
       }
       // 挂载完成后
       componentDidMount() {
@@ -56,17 +63,17 @@
         console.log('componentWillUnmount');
       }
       // 控制更新的阀门 不写此函数会默认返回true 若写出 则需指明返回值 否则将返回undefined 报错
-      shouldComponentUpdate(){
+      shouldComponentUpdate() {
         console.log('shouldComponentUpdate');
         return true
       }
-      // 更新完成后
-      componentDidUpdate(){
+      // 更新完成后 可接收三个参数 prevProps--更新前props，prevState--更新前state，getSnapshotBeforeUpdate传过来的snapshotValue
+      componentDidUpdate(prevProps, prevState, snapshotValue) {
         console.log('componentDidUpdate');
       }
       render() {
         console.log('render');
-        let {count} = this.state
+        let { count } = this.state
         return (
           <div>
             <h1>当前数值为：{count}</h1>
@@ -79,11 +86,11 @@
         )
       }
     }
-    class Son extends React.Component{
-      render(){
-        return(
+    class Son extends React.Component {
+      render() {
+        return (
           <div>
-            <h1>子组件,状态：{this.props.sonState ? '白':'黑'}</h1>  
+            <h1>子组件,状态：{this.props.sonState ? '白' : '黑'}</h1>
           </div>
         )
       }
